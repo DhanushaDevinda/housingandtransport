@@ -6,10 +6,6 @@ import { styled } from "@mui/material/styles";
 import { blue, grey } from "../const";
 import Label from "./Label";
 
-const StyledLabel = styled(Label)`
-  margin: 4px !important;
-`;
-
 const StyledAutocomplete = styled(Autocomplete)(
   ({ theme }) => `
 
@@ -69,8 +65,6 @@ const FileField = ({
   // Handler to handle file selection
   const handleCarouselFiles = (e) => {
     const selectedFiles = e.target.files;
-    console.log(selectedFiles.length, files.length);
-
     if (selectedFiles.length <= 2 && files.length < 2) {
       if (multiple) {
         // If multiple files can be selected, add all selected files to the state

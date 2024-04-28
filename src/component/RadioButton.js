@@ -3,6 +3,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Label from "./Label";
 import { styled } from "@mui/material/styles";
+import { red } from "../const";
 
 const StyledRadioGroup = styled(RadioGroup)(
   ({ theme }) => `
@@ -10,18 +11,27 @@ const StyledRadioGroup = styled(RadioGroup)(
   `
 );
 
-const RadioButton = ({ options, labelText }) => {
-  console.log("🚀 ~ RadioButton ~ options:", options);
+const RadioButton = ({
+  options,
+  error,
+  labelText,
+  helperText,
+  onChange,
+  label,
+  name,
+  value,
+}) => {
   return (
     <div>
-      <Label>{labelText}</Label>
+      <Label error={error}>{`${labelText} *`}</Label>
       <StyledRadioGroup
         row
         aria-labelledby="demo-radio-buttons-group-label"
         defaultValue="female"
-        name="radio-buttons-group"
+        onChange={onChange}
+        name={name}
       >
-        {options != undefined &&
+        {options !== undefined &&
           options.map((option) => (
             <FormControlLabel
               key={option.value}
@@ -31,6 +41,7 @@ const RadioButton = ({ options, labelText }) => {
             />
           ))}
       </StyledRadioGroup>
+      {error && <span style={{ color: red[500] }}>{helperText}</span>}
     </div>
   );
 };

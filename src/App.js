@@ -42,37 +42,80 @@ const StyledButton = styled(Button)(
 function App() {
   const [files, setFiles] = useState([]);
   const [formValues, setFormValues] = useState({
-    name: {
+    requesterName: {
       value: "",
       error: false,
-      errorMessage: "You must enter a name",
+      errorMessage: "You must enter a Requester Name ",
     },
-    age: {
+    erpNo: {
       value: "",
       error: false,
-      errorMessage: "You must enter an age",
+      errorMessage: "You must enter an ERP No",
     },
-    likes: {
+    department: {
       value: "",
       error: false,
-      errorMessage: "You must enter your liked tech stacks",
+      errorMessage: "You must enter your Department",
     },
-    jobTitle: {
-      value: "full-stack",
+    payGrade: {
+      value: "none",
       error: false,
-      errorMessage: "You must choose your job title",
+      errorMessage: "You must choose your Pay Grade",
+    },
+    residenceDetails: {
+      value: "",
+      error: false,
+      errorMessage: "You must enter your Residence Details",
+    },
+    joiningDate: {
+      value: "",
+      error: false,
+      errorMessage: "You must choose your Joining Date",
+    },
+    moveOutLocation: {
+      value: "",
+      error: false,
+      errorMessage: "You must enter your Move-out Location",
+    },
+    mobileNo: {
+      value: "",
+      error: false,
+      errorMessage: "You must enter your Mobile No",
+    },
+    transportRequestAllowance: {
+      value: "",
+      error: false,
+      errorMessage: "You must choose option",
+    },
+    housingRequestAllowance: {
+      value: "",
+      error: false,
+      errorMessage: "You must choose option",
     },
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormValues({
-      ...formValues,
-      [name]: {
-        ...formValues[name],
-        value,
-      },
-    });
+
+    if (value === "") {
+      setFormValues({
+        ...formValues,
+        [name]: {
+          ...formValues[name],
+          value,
+          error: true,
+        },
+      });
+    } else {
+      setFormValues({
+        ...formValues,
+        [name]: {
+          ...formValues[name],
+          value,
+          error: false,
+        },
+      });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -85,7 +128,7 @@ function App() {
       const currentField = formFields[index];
       const currentValue = formValues[currentField].value;
 
-      if (currentValue === "") {
+      if (currentValue === "" || currentValue === "none") {
         newFormValues = {
           ...newFormValues,
           [currentField]: {
@@ -97,100 +140,10 @@ function App() {
     }
 
     setFormValues(newFormValues);
+    console.log("🚀 ~ handleSubmit ~ newFormValues:", newFormValues);
   };
   return (
     <div>
-      {/* <Container>
-        <form noValidate onSubmit={handleSubmit}>
-          <Typography variant="h6">Please enter your data</Typography>
-          <Input
-            placeholder="Enter your name"
-            label="Name"
-            name="name"
-            labelText="Requester Name"
-            value={formValues.name.value}
-            onChange={handleChange}
-            error={formValues.name.error}
-            helperText={formValues.name.error && formValues.name.errorMessage}
-          />
-          <TextField
-            placeholder="Enter your name"
-            label="Name"
-            name="name"
-            variant="outlined"
-            fullWidth
-            required
-            value={formValues.name.value}
-            onChange={handleChange}
-            error={formValues.name.error}
-            helperText={formValues.name.error && formValues.name.errorMessage}
-          />
-
-          <TextField
-            placeholder="Enter your age"
-            label="Age"
-            name="age"
-            variant="outlined"
-            fullWidth
-            required
-            type="number"
-            value={formValues.age.value}
-            onChange={handleChange}
-            error={formValues.age.error}
-            helperText={formValues.age.error && formValues.age.errorMessage}
-          />
-
-          <TextField
-            placeholder="Describe the best tech stack you worked with and you like most?"
-            label="Likes"
-            name="likes"
-            variant="outlined"
-            fullWidth
-            required
-            value={formValues.likes.value}
-            multiline
-            rows={4}
-            onChange={handleChange}
-            error={formValues.likes.error}
-            helperText={formValues.likes.error && formValues.likes.errorMessage}
-          />
-
-          <FormControl>
-            <FormLabel>Job title</FormLabel>
-            <RadioGroup
-              name="jobTitle"
-              value={formValues.jobTitle.value}
-              onChange={handleChange}
-            >
-              <FormControlLabel
-                value="full-stack"
-                control={<Radio />}
-                label="Full stack"
-              />
-              <FormControlLabel
-                value="backend"
-                control={<Radio />}
-                label="Backend"
-              />
-              <FormControlLabel
-                value="frontend"
-                control={<Radio />}
-                label="Frontend"
-              />
-            </RadioGroup>
-          </FormControl>
-
-          <Button
-            type="submit"
-            variant="outlined"
-            color="secondary"
-            endIcon={<KeyboardArrowRight />}
-          >
-            Submit
-          </Button>
-        </form>
-      </Container> */}
-
       <Grid
         container
         justifyContent="center"
@@ -223,47 +176,85 @@ function App() {
               <Grid container spacing={{ xs: 1, sm: 2, md: 3 }}>
                 <Grid item xs={12} sm={6}>
                   <Input
-                    placeholder="Enter your name"
-                    label="Name"
-                    name="name"
-                    value={formValues.name.value}
+                    placeholder="Enter name"
+                    label="Requester Name"
+                    name="requesterName"
+                    value={formValues.requesterName.value}
                     onChange={handleChange}
                     labelText="Requester Name"
-                    error={formValues.name.error}
+                    error={formValues.requesterName.error}
                     helperText={
-                      formValues.name.error && formValues.name.errorMessage
+                      formValues.requesterName.error &&
+                      formValues.requesterName.errorMessage
                     }
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Input
+                    placeholder="Enter ERP No"
+                    label="ERP No"
+                    name="erpNo"
+                    value={formValues.erpNo.value}
+                    onChange={handleChange}
+                    labelText="ERP No"
+                    error={formValues.erpNo.error}
+                    helperText={
+                      formValues.erpNo.error && formValues.erpNo.errorMessage
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Input
+                    placeholder="Enter Department"
+                    labelText="Department"
+                    name="department"
+                    value={formValues.department.value}
+                    onChange={handleChange}
+                    error={formValues.department.error}
+                    helperText={
+                      formValues.department.error &&
+                      formValues.department.errorMessage
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <DropDown
+                    placeholder="Enter Pay Grade"
+                    labelText="Pay Grade"
+                    name="payGrade"
+                    value={formValues.payGrade.value}
+                    onChange={handleChange}
+                    error={formValues.payGrade.error}
+                    helperText={
+                      formValues.payGrade.error &&
+                      formValues.payGrade.errorMessage
+                    }
+                    options={[
+                      {
+                        value: 0,
+                        label: "Select an option",
+                      },
+                      { value: 1, label: "FC01" },
+                      { value: 2, label: "FC02" },
+                      { value: 3, label: "FC03" },
+                      { value: 4, label: "FC04" },
+                    ]}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <FormControl defaultValue="" required>
                     <Input
-                      placeholder="Enter your age"
-                      label="age"
-                      name="age"
-                      value={formValues.name.value}
+                      placeholder="Enter Residence Details"
+                      labelText="Residence Details"
+                      name="residenceDetails"
+                      value={formValues.residenceDetails.value}
                       onChange={handleChange}
-                      labelText="ERP No"
-                      error={formValues.age.error}
+                      error={formValues.residenceDetails.error}
                       helperText={
-                        formValues.age.error && formValues.age.errorMessage
+                        formValues.residenceDetails.error &&
+                        formValues.residenceDetails.errorMessage
                       }
                     />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <FormControl defaultValue="" required>
-                    <Input labelText="Department" />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <FormControl defaultValue="" required>
-                    <DropDown labelText="Pay Grade" />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <FormControl defaultValue="" required>
-                    <Input labelText="Residence Details" />
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -273,12 +264,34 @@ function App() {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <FormControl defaultValue="" required>
-                    <Input labelText="Move-out Location" />
+                    <Input
+                      placeholder="Enter Move-out Location"
+                      labelText="Move-out Location"
+                      name="moveOutLocation"
+                      value={formValues.moveOutLocation.value}
+                      onChange={handleChange}
+                      error={formValues.moveOutLocation.error}
+                      helperText={
+                        formValues.moveOutLocation.error &&
+                        formValues.moveOutLocation.errorMessage
+                      }
+                    />
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <FormControl defaultValue="" required>
-                    <Input labelText="Mobile No" />
+                    <Input
+                      placeholder="Enter Mobile No"
+                      labelText="Mobile No"
+                      name="mobileNo"
+                      value={formValues.mobileNo.value}
+                      onChange={handleChange}
+                      error={formValues.mobileNo.error}
+                      helperText={
+                        formValues.mobileNo.error &&
+                        formValues.mobileNo.errorMessage
+                      }
+                    />
                   </FormControl>
                 </Grid>
               </Grid>
@@ -287,6 +300,14 @@ function App() {
                 <Grid item xs={12} sm={12} md={12}>
                   <FormControl>
                     <RadioButton
+                      name="housingRequestAllowance"
+                      value={formValues.housingRequestAllowance.value}
+                      onChange={handleChange}
+                      error={formValues.housingRequestAllowance.error}
+                      helperText={
+                        formValues.housingRequestAllowance.error &&
+                        formValues.housingRequestAllowance.errorMessage
+                      }
                       labelText="Housing Request Allowance"
                       options={[
                         { value: "Married", label: "Married" },
@@ -345,6 +366,15 @@ function App() {
                 <Grid item xs={12} sm={6}>
                   <FormControl>
                     <RadioButton
+                      placeholder="Enter Pay Grade"
+                      name="transportRequestAllowance"
+                      value={formValues.transportRequestAllowance.value}
+                      onChange={handleChange}
+                      error={formValues.transportRequestAllowance.error}
+                      helperText={
+                        formValues.transportRequestAllowance.error &&
+                        formValues.transportRequestAllowance.errorMessage
+                      }
                       labelText="Transport Request Allowance"
                       options={[
                         { value: "FC04 or above", label: "FC04 or above" },

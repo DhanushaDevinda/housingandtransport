@@ -17,7 +17,7 @@ const StyledInput = styled(MInput)(
       border-radius: 8px;
       color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
       background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
-      border: 1px solid ${error ? red[200] : grey[700]};
+      border: 1px solid ${error ? red[200] : grey[200]};
 
       &:hover {
         border-color: ${error ? red[200] : blue[400]};
@@ -36,6 +36,7 @@ const StyledInput = styled(MInput)(
 
 const Input = ({
   labelText,
+  placeholder,
   helperText,
   onChange,
   label,
@@ -43,13 +44,11 @@ const Input = ({
   error,
   value,
 }) => {
-  console.log("🚀 ~ error:", error, helperText);
-
   return (
     <div>
       <Label error={error}>{`${labelText} *`}</Label>
       <StyledInput
-        placeholder="Write your name here"
+        placeholder={placeholder}
         onChange={onChange}
         label={label}
         name={name}

@@ -3,7 +3,7 @@ import { Select as BaseSelect, selectClasses } from "@mui/base/Select";
 import PropTypes from "prop-types";
 import { Option as BaseOption, optionClasses } from "@mui/base/Option";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
-import { blue, grey } from "../const";
+import { blue, grey, red } from "../const";
 import Label from "../component/Label";
 import { styled } from "@mui/material/styles";
 
@@ -47,7 +47,7 @@ Button.propTypes = {
 };
 
 const StyledButton = styled("button", { shouldForwardProp: () => true })(
-  ({ theme }) => `
+  ({ theme, error }) => `
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 1rem;
     box-sizing: border-box;
@@ -58,7 +58,8 @@ const StyledButton = styled("button", { shouldForwardProp: () => true })(
     text-align: left;
     line-height: 1.5;
     background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
-    border: 1px solid ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
+    border: 1px solid ${error ? red[200] : grey[200]};
+
     color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
     position: relative;
     box-shadow: 0px 2px 4px ${
@@ -176,24 +177,35 @@ const Popup = styled("div")`
   z-index: 1;
 `;
 
-const DropDown = ({ labelText }) => {
+const DropDown = ({
+  labelText,
+  options,
+  error,
+  helperText,
+  onChange,
+  name,
+  value,
+}) => {
   return (
     <div>
-      <Label>{labelText}</Label>
+      <Label error={error}>{`${labelText} *`}</Label>
       <Select
-        defaultValue={10}
+        defaultValue={value}
         renderValue={(option) => {
-          if (option == null || option.value === 0) {
+          if (option == null || option.value === "none") {
             return "Select an option…";
           }
-          return `${option.label} (${option.value})`;
+          return `${option.label}`;
         }}
+        name={name}
+        error={error}
       >
-        <Option value={0}>None</Option>
-        <Option value={10}>Ten</Option>
-        <Option value={20}>Twenty</Option>
-        <Option value={30}>Thirty</Option>
+        {options !== undefined &&
+          options.map((option) => (
+            <Option value={option.value}>{option.label}</Option>
+          ))}
       </Select>
+      {error && <span style={{ color: red[500] }}>{helperText}</span>}
     </div>
   );
 };
