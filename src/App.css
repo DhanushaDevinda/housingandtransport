@@ -24,6 +24,10 @@
   color: white;
 }
 
+.base-Popper-root.MuiPickersPopper-root.css-1anqmj6-MuiPopper-root-MuiPickersPopper-root {
+  margin: 12px 0 !important;
+}
+
 .App-link {
   color: #61dafb;
 }
