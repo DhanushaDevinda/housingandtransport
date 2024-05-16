@@ -3,7 +3,7 @@ import { Autocomplete, ButtonBase, TextField } from "@mui/material";
 import React, { Fragment, useRef } from "react";
 import FileUploadOutlined from "@mui/icons-material/FileUploadOutlined";
 import { styled } from "@mui/material/styles";
-import { blue, grey } from "../const";
+import { blue, grey, red } from "../const";
 import Label from "./Label";
 
 const StyledAutocomplete = styled(Autocomplete)(
@@ -57,24 +57,28 @@ const FileField = ({
   autoCompleteProps,
   multiple,
   files,
-  setFiles,
+  // setFiles,
   labelText,
+  onChange,
+  name,
+  error,
+  helperText,
 }) => {
   const fileRef = useRef(null);
 
-  // Handler to handle file selection
-  const handleCarouselFiles = (e) => {
-    const selectedFiles = e.target.files;
-    if (selectedFiles.length <= 2 && files.length < 2) {
-      if (multiple) {
-        // If multiple files can be selected, add all selected files to the state
-        setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
-      } else {
-        // If only one file can be selected, set the selected file as the state
-        setFiles(selectedFiles);
-      }
-    }
-  };
+  // // Handler to handle file selection
+  // const handleCarouselFiles = (e) => {
+  //   const selectedFiles = e.target.files;
+  //   if (selectedFiles.length <= 2 && files.length < 2) {
+  //     if (multiple) {
+  //       // If multiple files can be selected, add all selected files to the state
+  //       setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
+  //     } else {
+  //       // If only one file can be selected, set the selected file as the state
+  //       setFiles(selectedFiles);
+  //     }
+  //   }
+  // };
 
   // Handler to open file input when clicking on text field or upload icon
   const handleCarouselInput = () => {
@@ -84,7 +88,7 @@ const FileField = ({
   return (
     <Fragment>
       {/* Autocomplete component to display selected files */}
-      <Label className="label">{labelText}</Label>
+      <Label error={error}>{`${labelText} *`}</Label>
       <StyledAutocomplete
         multiple
         options={Array.from(files)}
@@ -104,7 +108,7 @@ const FileField = ({
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        setFiles([]);
+                        // setFiles([]);
                       }}
                       sx={{
                         paddingRight: "0.5rem",
@@ -131,7 +135,7 @@ const FileField = ({
         value={Array.from(files)}
         onChange={(event, newValue) => {
           event.preventDefault();
-          setFiles(newValue);
+          // setFiles(newValue);
         }}
         open={false}
         sx={{
@@ -147,12 +151,17 @@ const FileField = ({
 
       {/* Hidden file input */}
       <input
+        name={name}
         type="file"
         ref={fileRef}
         style={{ display: "none" }}
-        onChange={handleCarouselFiles}
+        onChange={(e) => {
+          // handleCarouselFiles(e);
+          onChange(e);
+        }}
         multiple={multiple}
       />
+      {error && <span style={{ color: red[500] }}>{helperText}</span>}
     </Fragment>
   );
 };

@@ -4,11 +4,11 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Label from "../component/Label";
-import { blue, grey } from "../const";
+import { blue, grey, red } from "../const";
 import { styled } from "@mui/material/styles";
 import "../App.css";
 const StyledDesktopDatePicker = styled(DesktopDatePicker)(
-  ({ theme }) => `
+  ({ theme, error }) => `
       width: -webkit-fill-available !important; 
       
       .MuiOutlinedInput-root{
@@ -20,9 +20,8 @@ const StyledDesktopDatePicker = styled(DesktopDatePicker)(
       border-radius: 8px;
       color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
       background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
-      border: 1px solid ${
-        theme.palette.mode === "dark" ? grey[700] : grey[200]
-      };
+      border: 1px solid ${error ? red[200] : grey[200]};
+
       &:hover {
         border-color: ${blue[400]};
        
@@ -45,13 +44,26 @@ const StyledDesktopDatePicker = styled(DesktopDatePicker)(
     `
 );
 
-const DatePicker = ({ labelText }) => {
+const DatePicker = ({
+  labelText,
+  error,
+  name,
+  onChange,
+  value,
+  helperText,
+}) => {
   return (
     <div>
-      <Label>{labelText}</Label>
+      <Label error={error}>{`${labelText} *`}</Label>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <StyledDesktopDatePicker defaultValue={dayjs("2022-04-17")} />
+        <StyledDesktopDatePicker
+          defaultValue={dayjs(value)}
+          onChange={(e) => console.log(dayjs(e))}
+          name={name}
+          error={error}
+        />
       </LocalizationProvider>
+      {error && <span style={{ color: red[500] }}>{helperText}</span>}
     </div>
   );
 };

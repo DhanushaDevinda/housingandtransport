@@ -1,52 +1,14 @@
 import React from "react";
-import { Select as BaseSelect, selectClasses } from "@mui/base/Select";
-import PropTypes from "prop-types";
-import { Option as BaseOption, optionClasses } from "@mui/base/Option";
-import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
+import { selectClasses } from "@mui/base/Select";
 import { blue, grey, red } from "../const";
 import Label from "../component/Label";
 import { styled } from "@mui/material/styles";
 
-function Select(props) {
-  const slots = {
-    root: Button,
-    listbox: Listbox,
-    popup: Popup,
-    ...props.slots,
-  };
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
-  return <BaseSelect {...props} slots={slots} />;
-}
-
-Select.propTypes = {
-  /**
-   * The components used for each slot inside the Select.
-   * Either a string to use a HTML element or a component.
-   * @default {}
-   */
-  slots: PropTypes.shape({
-    listbox: PropTypes.elementType,
-    popup: PropTypes.elementType,
-    root: PropTypes.elementType,
-  }),
-};
-
-const Button = React.forwardRef(function Button(props, ref) {
-  const { ownerState, ...other } = props;
-  return (
-    <StyledButton type="button" {...other} ref={ref}>
-      {other.children}
-      <ArrowDropDownRoundedIcon />
-    </StyledButton>
-  );
-});
-
-Button.propTypes = {
-  children: PropTypes.node,
-  ownerState: PropTypes.object.isRequired,
-};
-
-const StyledButton = styled("button", { shouldForwardProp: () => true })(
+const StyledSelect = styled(Select)(
   ({ theme, error }) => `
     font-family: 'IBM Plex Sans', sans-serif;
     font-size: 1rem;
@@ -58,14 +20,19 @@ const StyledButton = styled("button", { shouldForwardProp: () => true })(
     text-align: left;
     line-height: 1.5;
     background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
-    border: 1px solid ${error ? red[200] : grey[200]};
+    border: 1px solid ${error ? red[200] : grey[200]} !important;
+
 
     color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
     position: relative;
     box-shadow: 0px 2px 4px ${
       theme.palette.mode === "dark" ? "rgba(0,0,0, 0.5)" : "rgba(0,0,0, 0.05)"
     };
-  
+
+    .MuiPaper-root{
+      margin-top:8px;
+    }
+
     transition-property: all;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 120ms;
@@ -84,7 +51,9 @@ const StyledButton = styled("button", { shouldForwardProp: () => true })(
   
     
   
-    &.${selectClasses.focusVisible} {
+    &.${selectClasses.select} {
+      border: 1px solid ${error ? red[200] : grey[200]} !important;
+
       outline: 0;
       border-color: ${blue[400]} !important;
       box-shadow: 0 0 0 3px ${
@@ -102,81 +71,6 @@ const StyledButton = styled("button", { shouldForwardProp: () => true })(
     `
 );
 
-const Listbox = styled("ul")(
-  ({ theme }) => `
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 1rem;
-    box-sizing: border-box;
-    padding: 6px;
-    margin: 12px 0;
-    min-width: 320px;
-    border-radius: 12px;
-    overflow: auto;
-    outline: 0px;
-    background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
-    border: 1px solid ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
-    color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
-    box-shadow: 0px 2px 4px ${
-      theme.palette.mode === "dark" ? "rgba(0,0,0, 0.5)" : "rgba(0,0,0, 0.05)"
-    };
-    `
-);
-
-const Option = styled(BaseOption)(
-  ({ theme }) => `
-    list-style: none;
-    padding: 8px;
-    border-radius: 8px;
-    cursor: default;
-  
-    &:last-of-type {
-      border-bottom: none;
-    }
-  
-    &.${optionClasses.selected} {
-      background-color: ${
-        theme.palette.mode === "dark" ? blue[900] : blue[100]
-      };
-      color: ${theme.palette.mode === "dark" ? blue[100] : blue[900]};
-    }
-  
-    &.${optionClasses.highlighted} {
-      background-color: ${
-        theme.palette.mode === "dark" ? grey[800] : grey[100]
-      };
-      color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
-    }
-  
-    &.${optionClasses.highlighted}.${optionClasses.selected} {
-      background-color: ${
-        theme.palette.mode === "dark" ? blue[900] : blue[100]
-      };
-      color: ${theme.palette.mode === "dark" ? blue[100] : blue[900]};
-    }
-  
-    &:focus-visible {
-      outline: 3px solid ${
-        theme.palette.mode === "dark" ? blue[600] : blue[200]
-      };
-    }
-  
-    &.${optionClasses.disabled} {
-      color: ${theme.palette.mode === "dark" ? grey[700] : grey[400]};
-    }
-  
-    &:hover:not(.${optionClasses.disabled}) {
-      background-color: ${
-        theme.palette.mode === "dark" ? grey[800] : grey[100]
-      };
-      color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
-    }
-    `
-);
-
-const Popup = styled("div")`
-  z-index: 1;
-`;
-
 const DropDown = ({
   labelText,
   options,
@@ -189,7 +83,22 @@ const DropDown = ({
   return (
     <div>
       <Label error={error}>{`${labelText} *`}</Label>
-      <Select
+      <FormControl fullWidth>
+        <StyledSelect
+          name={name}
+          error={error}
+          value={value}
+          onChange={onChange}
+          displayEmpty
+          inputProps={{ "aria-label": "Without label" }}
+        >
+          {options !== undefined &&
+            options.map((option) => (
+              <MenuItem value={option.value}>{option.label}</MenuItem>
+            ))}
+        </StyledSelect>
+      </FormControl>
+      {/* <Select
         defaultValue={value}
         renderValue={(option) => {
           if (option == null || option.value === "none") {
@@ -199,12 +108,13 @@ const DropDown = ({
         }}
         name={name}
         error={error}
+        onChange={(event) => console.log(event.target.value)}
       >
         {options !== undefined &&
           options.map((option) => (
-            <Option value={option.value}>{option.label}</Option>
+            <MenuItem value={option.value}>{option.label}</MenuItem>
           ))}
-      </Select>
+      </Select> */}
       {error && <span style={{ color: red[500] }}>{helperText}</span>}
     </div>
   );

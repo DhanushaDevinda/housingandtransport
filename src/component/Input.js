@@ -43,6 +43,7 @@ const Input = ({
   name,
   error,
   value,
+  multiline = false,
 }) => {
   return (
     <div>
@@ -54,6 +55,7 @@ const Input = ({
         name={name}
         error={error}
         value={value}
+        multiline={multiline}
       />
       {error && <span style={{ color: red[500] }}>{helperText}</span>}
     </div>

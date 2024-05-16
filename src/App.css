@@ -28,6 +28,11 @@
   margin: 12px 0 !important;
 }
 
+.MuiPaper-root{
+  margin-top:8px;
+  border-radius: 8px !important;
+}
+
 .App-link {
   color: #61dafb;
 }
