@@ -111,18 +111,47 @@ function App() {
     },
   });
 
-  const fileHandleChange = (e) => {
-    const name = e.target.name;
-    const selectedFiles = e.target.files;
-
-    console.log("🚀 ~  ~ name, value:", name, selectedFiles);
-
-    if (selectedFiles.length <= 2 && files.length < 2) {
+  const setFile = (name, array) => {
+    if (array.length === 0) {
       setFormValues({
         ...formValues,
         [name]: {
           ...formValues[name],
-          value: [...formValues[name].value, ...selectedFiles],
+          value: array,
+          error: true,
+        },
+      });
+    } else {
+      setFormValues({
+        ...formValues,
+        [name]: {
+          ...formValues[name],
+          value: array,
+          error: false,
+        },
+      });
+    }
+  };
+  const fileHandleChange = (e) => {
+    const name = e.target.name;
+    const selectedFiles = e.target.files;
+
+    if (formValues[name].value.length >= 0) {
+      if (selectedFiles.length <= 2 && files.length < 2) {
+        setFormValues({
+          ...formValues,
+          [name]: {
+            ...formValues[name],
+            value: [...formValues[name].value, ...selectedFiles],
+            error: false,
+          },
+        });
+      }
+    } else {
+      setFormValues({
+        ...formValues,
+        [name]: {
+          ...formValues[name],
           error: true,
         },
       });
@@ -276,10 +305,11 @@ function App() {
                         value: "none",
                         label: "Select an option",
                       },
-                      { value: 1, label: "FC01" },
-                      { value: 2, label: "FC02" },
-                      { value: 3, label: "FC03" },
-                      { value: 4, label: "FC04" },
+                      { value: "FC01", label: "FC01" },
+                      { value: "FC02", label: "FC02" },
+                      { value: "FC03", label: "FC03" },
+                      { value: "FC04", label: "FC04" },
+                      { value: "FC05", label: "FC05" },
                     ]}
                   />
                 </Grid>
@@ -306,6 +336,10 @@ function App() {
                       { value: "Al Nahda", label: "Al Nahda" },
                       { value: "Al Khail Gate", label: "Al Khail Gate" },
                       { value: "Jabel Ali", label: "Jabel Ali" },
+                      {
+                        value: "Not Staying in Accommodation",
+                        label: "Not Staying in Accommodation",
+                      },
                     ]}
                   />
                 </Grid>
@@ -358,12 +392,8 @@ function App() {
                       options={[
                         { value: "Marriage", label: "Marriage" },
                         {
-                          value: "Parent in Low",
-                          label: "Parent or Low",
-                        },
-                        {
-                          value: "Children in Low",
-                          label: "Children or Low",
+                          value: "Parent/in Law/Children",
+                          label: "Parent/in Law/Children",
                         },
                         { value: "FC04 or above", label: "FC04 or above" },
                         { value: "Exception cases", label: "Exception cases" },
@@ -389,6 +419,7 @@ function App() {
                         formValues.marriageCertificate.error &&
                         formValues.marriageCertificate.errorMessage
                       }
+                      setFile={setFile}
                     />
                   </Grid>
                   <Grid item xs={12} sm={4} md={4}>
@@ -405,6 +436,7 @@ function App() {
                         formValues.passportCopies.error &&
                         formValues.passportCopies.errorMessage
                       }
+                      setFile={setFile}
                     />
                   </Grid>
                   <Grid item xs={12} sm={4} md={4}>
@@ -421,29 +453,15 @@ function App() {
                         formValues.residentVisaCopies.error &&
                         formValues.residentVisaCopies.errorMessage
                       }
+                      setFile={setFile}
                     />
                   </Grid>
                 </Grid>
               )}
 
-              {formValues.housingRequestAllowance.value === "Parent in Low" && (
+              {formValues.housingRequestAllowance.value ===
+                "Parent/in Law/Children" && (
                 <Grid container spacing={{ xs: 3, sm: 3, md: 3 }}>
-                  <Grid item xs={12} sm={4} md={4}>
-                    <FileField
-                      name="marriageCertificate"
-                      onChange={fileHandleChange}
-                      labelText="Attested Birth Certificate"
-                      multiple={true} // Allow multiple files to be selected
-                      files={formValues.marriageCertificate.value}
-                      textfieldProps={"Upload Files"} // Props for the text field
-                      autoCompleteProps={{ freeSolo: true }} // Props for the Autocomplete component
-                      error={formValues.marriageCertificate.error}
-                      helperText={
-                        formValues.marriageCertificate.error &&
-                        formValues.marriageCertificate.errorMessage
-                      }
-                    />
-                  </Grid>
                   <Grid item xs={12} sm={4} md={4}>
                     <FileField
                       name="passportCopies"
@@ -458,6 +476,7 @@ function App() {
                         formValues.passportCopies.error &&
                         formValues.passportCopies.errorMessage
                       }
+                      setFile={setFile}
                     />
                   </Grid>
                   <Grid item xs={12} sm={4} md={4}>
@@ -474,6 +493,24 @@ function App() {
                         formValues.residentVisaCopies.error &&
                         formValues.residentVisaCopies.errorMessage
                       }
+                      setFile={setFile}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={4} md={4}>
+                    <FileField
+                      name="marriageCertificate"
+                      onChange={fileHandleChange}
+                      labelText="Attested Birth Certificate"
+                      multiple={true} // Allow multiple files to be selected
+                      files={formValues.marriageCertificate.value}
+                      textfieldProps={"Upload Files"} // Props for the text field
+                      autoCompleteProps={{ freeSolo: true }} // Props for the Autocomplete component
+                      error={formValues.marriageCertificate.error}
+                      helperText={
+                        formValues.marriageCertificate.error &&
+                        formValues.marriageCertificate.errorMessage
+                      }
+                      setFile={setFile}
                     />
                   </Grid>
                 </Grid>
@@ -495,6 +532,7 @@ function App() {
                         formValues.marriageCertificate.error &&
                         formValues.marriageCertificate.errorMessage
                       }
+                      setFile={setFile}
                     />
                   </Grid>
                 </Grid>
@@ -532,91 +570,104 @@ function App() {
                         formValues.marriageCertificate.error &&
                         formValues.marriageCertificate.errorMessage
                       }
+                      setFile={setFile}
                     />
                   </Grid>
                 </div>
               )}
-
-              <Grid container spacing={{ xs: 1, sm: 2, md: 3 }}>
-                <Grid item xs={12} sm={6}>
-                  <FormControl>
-                    <RadioButton
-                      placeholder="Enter Pay Grade"
-                      name="transportRequestAllowance"
-                      value={formValues.transportRequestAllowance.value}
-                      onChange={handleChange}
-                      error={formValues.transportRequestAllowance.error}
-                      helperText={
-                        formValues.transportRequestAllowance.error &&
-                        formValues.transportRequestAllowance.errorMessage
-                      }
-                      labelText="Transport Request Allowance"
-                      options={[
-                        { value: "FC04 or above", label: "FC04 or above" },
-                        { value: "Exception cases", label: "Exception cases" },
-                      ]}
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
-
-              {formValues.transportRequestAllowance.value ===
-                "FC04 or above" && (
-                <Grid container spacing={{ xs: 3, sm: 3, md: 3 }}>
-                  <Grid item xs={12} sm={4} md={4}>
-                    <FileField
-                      name="promotionLetter"
-                      onChange={fileHandleChange}
-                      labelText="Promotion Letter"
-                      multiple={true} // Allow multiple files to be selected
-                      files={formValues.marriageCertificate.value}
-                      textfieldProps={"Upload Files"} // Props for the text field
-                      autoCompleteProps={{ freeSolo: true }} // Props for the Autocomplete component
-                      error={formValues.marriageCertificate.error}
-                      helperText={
-                        formValues.marriageCertificate.error &&
-                        formValues.marriageCertificate.errorMessage
-                      }
-                    />
+              {(formValues.payGrade.value === "FC04" ||
+                formValues.payGrade.value === "FC05") && (
+                <>
+                  <Grid container spacing={{ xs: 1, sm: 2, md: 3 }}>
+                    <Grid item xs={12} sm={6}>
+                      <FormControl>
+                        <RadioButton
+                          placeholder="Enter Pay Grade"
+                          name="transportRequestAllowance"
+                          value={formValues.transportRequestAllowance.value}
+                          onChange={handleChange}
+                          error={formValues.transportRequestAllowance.error}
+                          helperText={
+                            formValues.transportRequestAllowance.error &&
+                            formValues.transportRequestAllowance.errorMessage
+                          }
+                          labelText="Transport Request Allowance"
+                          options={[
+                            {
+                              value: "FC04 or above",
+                              label: "FC04 or above",
+                            },
+                            {
+                              value: "Exception cases",
+                              label: "Exception cases",
+                            },
+                          ]}
+                        />
+                      </FormControl>
+                    </Grid>
                   </Grid>
-                </Grid>
-              )}
 
-              {formValues.transportRequestAllowance.value ===
-                "Exception cases" && (
-                <div div>
-                  <Grid item xs={12} sm={6} md={6}>
-                    <Input
-                      placeholder="Enter specify details"
-                      labelText="Specify Details"
-                      name="department"
-                      value={formValues.department.value}
-                      onChange={handleChange}
-                      error={formValues.department.error}
-                      helperText={
-                        formValues.department.error &&
-                        formValues.department.errorMessage
-                      }
-                      multiline={true}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={6}>
-                    <FileField
-                      name="emailApproval"
-                      onChange={fileHandleChange}
-                      labelText="Email Approval Attachment"
-                      multiple={true} // Allow multiple files to be selected
-                      files={formValues.marriageCertificate.value}
-                      textfieldProps={"Upload Files"} // Props for the text field
-                      autoCompleteProps={{ freeSolo: true }} // Props for the Autocomplete component
-                      error={formValues.marriageCertificate.error}
-                      helperText={
-                        formValues.marriageCertificate.error &&
-                        formValues.marriageCertificate.errorMessage
-                      }
-                    />
-                  </Grid>
-                </div>
+                  {formValues.transportRequestAllowance.value ===
+                    "FC04 or above" && (
+                    <Grid container spacing={{ xs: 3, sm: 3, md: 3 }}>
+                      <Grid item xs={12} sm={4} md={4}>
+                        <FileField
+                          name="promotionLetter"
+                          onChange={fileHandleChange}
+                          labelText="Promotion Letter"
+                          multiple={true} // Allow multiple files to be selected
+                          files={formValues.marriageCertificate.value}
+                          textfieldProps={"Upload Files"} // Props for the text field
+                          autoCompleteProps={{ freeSolo: true }} // Props for the Autocomplete component
+                          error={formValues.marriageCertificate.error}
+                          helperText={
+                            formValues.marriageCertificate.error &&
+                            formValues.marriageCertificate.errorMessage
+                          }
+                          setFile={setFile}
+                        />
+                      </Grid>
+                    </Grid>
+                  )}
+
+                  {formValues.transportRequestAllowance.value ===
+                    "Exception cases" && (
+                    <div div>
+                      <Grid item xs={12} sm={6} md={6}>
+                        <Input
+                          placeholder="Enter specify details"
+                          labelText="Specify Details"
+                          name="department"
+                          value={formValues.department.value}
+                          onChange={handleChange}
+                          error={formValues.department.error}
+                          helperText={
+                            formValues.department.error &&
+                            formValues.department.errorMessage
+                          }
+                          multiline={true}
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6} md={6}>
+                        <FileField
+                          name="emailApproval"
+                          onChange={fileHandleChange}
+                          labelText="Email Approval Attachment"
+                          multiple={true} // Allow multiple files to be selected
+                          files={formValues.marriageCertificate.value}
+                          textfieldProps={"Upload Files"} // Props for the text field
+                          autoCompleteProps={{ freeSolo: true }} // Props for the Autocomplete component
+                          error={formValues.marriageCertificate.error}
+                          helperText={
+                            formValues.marriageCertificate.error &&
+                            formValues.marriageCertificate.errorMessage
+                          }
+                          setFile={setFile}
+                        />
+                      </Grid>
+                    </div>
+                  )}
+                </>
               )}
               <Grid
                 container

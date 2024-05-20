@@ -6,8 +6,17 @@ import { styled } from "@mui/material/styles";
 import { blue, grey, red } from "../const";
 import Label from "./Label";
 
+const StyledTextField = styled(TextField)(
+  ({ theme }) => `
+  .MuiFormLabel-root {
+    top: -5px !important;}
+  `
+);
+
 const StyledAutocomplete = styled(Autocomplete)(
   ({ theme }) => `
+
+
 
   .MuiAutocomplete-input {
     min-width: 0px !important;
@@ -28,7 +37,7 @@ const StyledAutocomplete = styled(Autocomplete)(
         font-weight: 400;
         line-height: 1.5;
         padding: 8px 12px;
-        height: 56px;
+        height: 44px;
         border-radius: 8px;
         color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
         background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
@@ -57,7 +66,7 @@ const FileField = ({
   autoCompleteProps,
   multiple,
   files,
-  // setFiles,
+  setFile,
   labelText,
   onChange,
   name,
@@ -94,7 +103,7 @@ const FileField = ({
         options={Array.from(files)}
         getOptionLabel={(option) => option.name}
         renderInput={(params) => (
-          <TextField
+          <StyledTextField
             {...params}
             label={files.length > 0 ? "" : textfieldProps}
             disabled
@@ -108,7 +117,7 @@ const FileField = ({
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        // setFiles([]);
+                        setFile(name, []);
                       }}
                       sx={{
                         paddingRight: "0.5rem",
@@ -135,7 +144,7 @@ const FileField = ({
         value={Array.from(files)}
         onChange={(event, newValue) => {
           event.preventDefault();
-          // setFiles(newValue);
+          setFile(name, newValue);
         }}
         open={false}
         sx={{
