@@ -16,14 +16,16 @@ const StyledTextField = styled(TextField)(
 const StyledAutocomplete = styled(Autocomplete)(
   ({ theme }) => `
 
-
+  .MuiAutocomplete-tag{
+    margin: -8px;
+  }
 
   .MuiAutocomplete-input {
     min-width: 0px !important;
 
 }
   .MuiChip-label{
-    width: 56px; /* Adjust the width to display approximately 15 characters */
+    width: 35px; /* Adjust the width to display approximately 15 characters */
     overflow: hidden;
     text-overflow: ellipsis;
     padding-left: 15px;

@@ -27,7 +27,7 @@ const RadioButton = ({
       <StyledRadioGroup
         row
         aria-labelledby="demo-radio-buttons-group-label"
-        defaultValue="female"
+        defaultValue={value}
         onChange={onChange}
         name={name}
       >
