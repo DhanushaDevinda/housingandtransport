@@ -238,7 +238,7 @@ function HousingForm() {
                 </span>
               </Typography>
 
-              <Typography variant="subtitle2" gutterBottom>
+              <Typography variant={"1rem"} gutterBottom>
                 Please fill out the following form to request your housing and
                 transport allowance. Your satisfaction and productivity are
                 paramount to us, and we aim to provide support tailored to your
