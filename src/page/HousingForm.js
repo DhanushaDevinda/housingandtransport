@@ -162,7 +162,7 @@ function HousingForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (value === "") {
+    if (value === "" || value === "none") {
       setFormValues({
         ...formValues,
         [name]: {

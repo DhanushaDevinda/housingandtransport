@@ -1,5 +1,8 @@
 import React from "react";
 import HousingForm from "./page/HousingForm";
+import BasicTable from "./page/DocumentList";
+import CheckStatus from "./page/CheckStatus";
+
 import Login from "./page/Login";
 import {
   AuthenticatedTemplate,
@@ -50,6 +53,9 @@ function App({ pca }) {
         {/* <Route path="/" element={<Login />} /> */}
         {/* <Route path="/" element={<RouteGuard />}> */}
         <Route path="/admin" element={<HousingForm />} />
+        <Route path="/documentList" element={<BasicTable />} />
+        <Route path="/status" element={<CheckStatus />} />
+
         {/* </Route> */}
       </Routes>
     </Router>
