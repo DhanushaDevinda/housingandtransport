@@ -52,7 +52,7 @@ function App({ pca }) {
       <Routes>
         {/* <Route path="/" element={<Login />} /> */}
         {/* <Route path="/" element={<RouteGuard />}> */}
-        <Route path="/admin" element={<HousingForm />} />
+        <Route path="/form" element={<HousingForm />} />
         <Route path="/documentList" element={<BasicTable />} />
         <Route path="/status" element={<CheckStatus />} />
 

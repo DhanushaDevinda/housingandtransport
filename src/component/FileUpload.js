@@ -74,6 +74,7 @@ const FileField = ({
   name,
   error,
   helperText,
+  secondaryText = "",
 }) => {
   const fileRef = useRef(null);
 
@@ -172,6 +173,13 @@ const FileField = ({
         }}
         multiple={multiple}
       />
+      {secondaryText !== "" && (
+        <span style={{ fontSize: "14px", color: grey[600] }}>
+          {secondaryText}
+          <br />
+        </span>
+      )}
+
       {error && <span style={{ color: red[500] }}>{helperText}</span>}
     </Fragment>
   );

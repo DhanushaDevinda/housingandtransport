@@ -12,12 +12,14 @@ import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 import Box from "@mui/material/Box";
+import MenuSimple from "../component/TableAction";
+import Typography from "@mui/material/Typography";
 
 const StyledContainer = styled(Container)(
   ({ theme }) => `
   
     @media (min-width: ${theme.breakpoints.values.md}px) {
-      box-shadow: 0 0 6px 6px ${grey[300]};
+    box-shadow: 0 0 6px 6px ${grey[300]};
     border-radius: 16px;
     margin:24px 0px;
   
@@ -31,6 +33,7 @@ function createData(
   requesterName,
   accommodationLocation,
   requestType,
+  eligibility,
   RequestStatus
 ) {
   return {
@@ -38,17 +41,26 @@ function createData(
     requesterName,
     accommodationLocation,
     requestType,
+    eligibility,
     RequestStatus,
   };
 }
 
 const rows = [
-  createData("23453", "Nimal", "Jabel Ali", "Transport Request", "Approve"),
+  createData(
+    "23453",
+    "Nimal",
+    "Jabel Ali",
+    "Transport Request",
+    "Exception Case",
+    "Approve"
+  ),
   createData(
     "23123",
     "Nimal",
     "Accommodation 3",
     "Housing and Transport Request",
+    "FC04 Promoted",
     "Approve"
   ),
   createData(
@@ -56,10 +68,25 @@ const rows = [
     "Nimal",
     "Accommodation 4",
     "Transport Request",
+    "Parent/in Law/Children",
     "Reject"
   ),
-  createData("12312", "Nimal", "Accommodation 4", "Housing Request", "Approve"),
-  createData("12312", "Nimal", "Accommodation 5", "Housing Request", "Reject"),
+  createData(
+    "12312",
+    "Nimal",
+    "Accommodation 4",
+    "Housing Request",
+    "Marriage",
+    "Approve"
+  ),
+  createData(
+    "12312",
+    "Nimal",
+    "Accommodation 5",
+    "Housing Request",
+    "Marriage",
+    "Reject"
+  ),
 ];
 
 export default function BasicTable() {
@@ -71,6 +98,18 @@ export default function BasicTable() {
       style={{ minHeight: "100vh" }} // Ensure the container takes up the full viewport height
     >
       <StyledContainer fixed>
+        <Typography
+          variant="h5"
+          gutterBottom
+          style={{
+            fontWeight: "bold",
+          }}
+        >
+          <span style={{ color: "#D5B16B" }}>
+            Housing and Transport Allowance&nbsp;
+          </span>
+          <span>Request List.&nbsp;</span>
+        </Typography>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -79,8 +118,9 @@ export default function BasicTable() {
                 <TableCell align="left">Requester Name</TableCell>
                 <TableCell align="left">Accommodation Location </TableCell>
                 <TableCell align="left">Request Type</TableCell>
+                <TableCell align="left">Eligibility</TableCell>
                 <TableCell align="left">Status</TableCell>
-                <TableCell align="center">Download</TableCell>
+                <TableCell align="center"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -97,26 +137,11 @@ export default function BasicTable() {
                   <TableCell align="left">
                     {row.accommodationLocation}
                   </TableCell>
-                  <TableCell align="left">
-                    <Box
-                      key={row.requestType}
-                      sx={{
-                        padding: "4px",
-                        lineHeight: "15px",
-                        borderRadius: "2px",
-                        textAlign: "center",
-                      }}
-                      style={{
-                        backgroundColor: grey[800],
-                        color: grey[50],
-                      }}
-                    >
-                      {row.requestType}
-                    </Box>
-                  </TableCell>
+                  <TableCell align="left">{row.requestType}</TableCell>
+                  <TableCell align="left">{row.eligibility}</TableCell>
                   <TableCell align="left">{row.RequestStatus}</TableCell>
-                  <TableCell align="center">
-                    <DownloadForOfflineIcon />
+                  <TableCell align="right">
+                    <MenuSimple />
                   </TableCell>
                 </TableRow>
               ))}

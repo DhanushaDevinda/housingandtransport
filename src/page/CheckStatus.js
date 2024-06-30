@@ -55,22 +55,15 @@ export default function CheckStatus() {
           allowance status. Your satisfaction and productivity are paramount to
           us, and we aim to provide support tailored to your needs.
         </Typography>
+
         <Grid container spacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item xs={6} sm={4}>
-            <Input
-              placeholder="Enter ERP No"
-              label="ERP No"
-              name="erpNo"
-              value={formValues.erpNo.value}
-              labelText="ERP No"
-              error={formValues.erpNo.error}
-              helperText={
-                formValues.erpNo.error && formValues.erpNo.errorMessage
-              }
-            />
+            <Label>
+              <b>ERP</b>
+            </Label>
+            <Label>56765</Label>
           </Grid>
-        </Grid>
-        <Grid container spacing={{ xs: 1, sm: 2, md: 3 }}>
+
           <Grid item xs={6} sm={4}>
             <Label>
               <b>Requester Name</b>
@@ -84,6 +77,22 @@ export default function CheckStatus() {
             </Label>
             <Label>Jabel Ali</Label>
           </Grid>
+        </Grid>
+        <Grid container spacing={{ xs: 1, sm: 2, md: 3 }}>
+          <Grid item xs={6} sm={4}>
+            <Label>
+              <b>Request Type</b>
+            </Label>
+            <Label>Housing Request</Label>
+          </Grid>
+
+          <Grid item xs={6} sm={4}>
+            <Label>
+              <b>Eligibility</b>
+            </Label>
+            <Label>Married</Label>
+          </Grid>
+
           <Grid item xs={6} sm={4}>
             <Label>
               <b>Status</b>

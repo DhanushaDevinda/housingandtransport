@@ -6,6 +6,7 @@ import FileField from "../component/FileUpload";
 import { useState } from "react";
 import Input from "../component/Input";
 import DatePicker from "../component/DatePicker";
+
 import DropDown from "../component/DropDown";
 import RadioButton from "../component/RadioButton";
 import { styled } from "@mui/material/styles";
@@ -162,26 +163,80 @@ function HousingForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (value === "" || value === "none") {
-      setFormValues({
-        ...formValues,
+    if (value === "FC04" || value === "FC05") {
+      setFormValues((prevFormValues) => ({
+        ...prevFormValues,
         [name]: {
-          ...formValues[name],
-          value,
-          error: true,
-        },
-      });
-    } else {
-      setFormValues({
-        ...formValues,
-        [name]: {
-          ...formValues[name],
+          ...prevFormValues[name],
           value,
           error: false,
         },
-      });
+        housingRequestAllowance: {
+          ...prevFormValues.housingRequestAllowance,
+          value: "",
+          error: false,
+        },
+      }));
+    } else if (value === "" || value === "none") {
+      setFormValues((prevFormValues) => ({
+        ...prevFormValues,
+        [name]: {
+          ...prevFormValues[name],
+          value,
+          error: true,
+        },
+      }));
+    } else {
+      setFormValues((prevFormValues) => ({
+        ...prevFormValues,
+        [name]: {
+          ...prevFormValues[name],
+          value,
+          error: false,
+        },
+      }));
     }
   };
+  //   console.log(
+  //     "🚀 ~ handleChange ~ name, value:",
+  //     name,
+  //     value,
+  //     formValues[name]
+  //   );
+  //   setFormValues({
+  //     ...formValues,
+  //     housingRequestAllowance: {
+  //       ...formValues.housingRequestAllowance,
+  //       value: "FC04 or above",
+  //       error: false,
+  //     },
+  //     transportRequestAllowance: {
+  //       ...formValues.transportRequestAllowance,
+  //       value,
+  //       error: false,
+  //     },
+  //   });
+  // }
+
+  // if (value === "" || value === "none") {
+  //   setFormValues({
+  //     ...formValues,
+  //     [name]: {
+  //       ...formValues[name],
+  //       value,
+  //       error: true,
+  //     },
+  //   });
+  // } else {
+  //   setFormValues({
+  //     ...formValues,
+  //     [name]: {
+  //       ...formValues[name],
+  //       value,
+  //       error: false,
+  //     },
+  //   });
+  // }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -240,9 +295,7 @@ function HousingForm() {
 
               <Typography variant={"1rem"} gutterBottom>
                 Please fill out the following form to request your housing and
-                transport allowance. Your satisfaction and productivity are
-                paramount to us, and we aim to provide support tailored to your
-                needs.
+                transport allowance.
               </Typography>
 
               <Grid container spacing={{ xs: 1, sm: 2, md: 3 }}>
@@ -378,38 +431,48 @@ function HousingForm() {
               </Grid>
 
               {formValues.payGrade.value !== "none" && (
-                <Grid container>
-                  <Grid item xs={10} sm={6} md={12}>
-                    <FormControl>
-                      <RadioButton
-                        name="housingRequestAllowance"
-                        value={formValues.housingRequestAllowance.value}
-                        onChange={handleChange}
-                        error={formValues.housingRequestAllowance.error}
-                        helperText={
-                          formValues.housingRequestAllowance.error &&
-                          formValues.housingRequestAllowance.errorMessage
-                        }
-                        labelText="Housing Request Allowance"
-                        options={[
-                          { value: "Marriage", label: "Marriage" },
-                          {
-                            value: "Parent/in Law/Children",
-                            label: "Parent/in Law/Children",
-                          },
-                          { value: "FC04 or above", label: "FC04 or above" },
-                          {
-                            value: "Exception cases",
-                            label: "Exception cases",
-                          },
-                        ]}
-                      />
-                    </FormControl>
-                  </Grid>
-                </Grid>
+                <>
+                  {!(
+                    formValues.payGrade.value === "FC04" ||
+                    formValues.payGrade.value == "FC05"
+                  ) ? (
+                    <Grid container>
+                      <Grid item xs={10} sm={6} md={12}>
+                        <FormControl>
+                          <RadioButton
+                            name="housingRequestAllowance"
+                            value={formValues.housingRequestAllowance.value}
+                            onChange={handleChange}
+                            error={formValues.housingRequestAllowance.error}
+                            helperText={
+                              formValues.housingRequestAllowance.error &&
+                              formValues.housingRequestAllowance.errorMessage
+                            }
+                            labelText="Housing Request Allowance"
+                            options={[
+                              { value: "Married", label: "Married" },
+                              {
+                                value: "Parent/in Law/Children",
+                                label: "Parent/in Law/Children",
+                              },
+                              {
+                                value: "Exception cases",
+                                label: "Exception cases",
+                              },
+                            ]}
+                          />
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+                  ) : (
+                    <p style={{ marginBottom: "0px" }}>
+                      Housing Request Allowance *&nbsp;
+                    </p>
+                  )}
+                </>
               )}
 
-              {formValues.housingRequestAllowance.value === "Marriage" && (
+              {formValues.housingRequestAllowance.value === "Married" && (
                 <Grid container spacing={{ xs: 1, sm: 2, md: 3 }}>
                   <Grid item xs={12} sm={4} md={4}>
                     <FileField
@@ -522,7 +585,8 @@ function HousingForm() {
                 </Grid>
               )}
 
-              {formValues.housingRequestAllowance.value === "FC04 or above" && (
+              {(formValues.payGrade.value === "FC04" ||
+                formValues.payGrade.value === "FC05") && (
                 <Grid container spacing={{ xs: 1, sm: 2, md: 3 }}>
                   <Grid item xs={12} sm={4} md={4}>
                     <FileField
@@ -546,7 +610,7 @@ function HousingForm() {
 
               {formValues.housingRequestAllowance.value ===
                 "Exception cases" && (
-                <div div>
+                <div>
                   <Grid item xs={12} sm={6} md={6}>
                     <Input
                       placeholder="Enter specify details"
@@ -566,7 +630,7 @@ function HousingForm() {
                     <FileField
                       name="emailApproval"
                       onChange={fileHandleChange}
-                      labelText="Email Approval Attachment"
+                      labelText="Approval Attachment"
                       multiple={true} // Allow multiple files to be selected
                       files={formValues.marriageCertificate.value}
                       textfieldProps={"Upload Files"} // Props for the text field
@@ -577,17 +641,22 @@ function HousingForm() {
                         formValues.marriageCertificate.errorMessage
                       }
                       setFile={setFile}
+                      secondaryText="Upload WhatsApp or email screenshot"
                     />
                   </Grid>
                 </div>
               )}
 
-              {formValues.payGrade.value === "FC04" ||
-              formValues.payGrade.value === "FC05" ? (
+              {!(
+                formValues.payGrade.value === "FC04" ||
+                formValues.payGrade.value === "FC05"
+              ) &&
+                formValues.payGrade.value !== "none" && <MouseOverPopover />}
+              {/* 
                 <>
                   <Grid container>
                     <Grid item xs={10} sm={6}>
-                      <FormControl>
+                     <FormControl>
                         <RadioButton
                           placeholder="Enter Pay Grade"
                           name="transportRequestAllowance"
@@ -611,33 +680,40 @@ function HousingForm() {
                           ]}
                         />
                       </FormControl>
+
+                      <p style={{ marginBottom: "0px" }}>
+                        Transport Request Allowance *&nbsp;
+                      </p>
                     </Grid>
+                  </Grid> */}
+
+              {(formValues.payGrade.value === "FC04" ||
+                formValues.payGrade.value === "FC05") && (
+                <Grid container spacing={{ xs: 3, sm: 3, md: 3 }}>
+                  <Grid item xs={12} sm={4} md={4}>
+                    <p style={{ marginBottom: "0px" }}>
+                      Transport Request Allowance *&nbsp;
+                    </p>
+                    <FileField
+                      name="promotionLetter"
+                      onChange={fileHandleChange}
+                      labelText="Promotion Letter"
+                      multiple={true} // Allow multiple files to be selected
+                      files={formValues.marriageCertificate.value}
+                      textfieldProps={"Upload Files"} // Props for the text field
+                      autoCompleteProps={{ freeSolo: true }} // Props for the Autocomplete component
+                      error={formValues.marriageCertificate.error}
+                      helperText={
+                        formValues.marriageCertificate.error &&
+                        formValues.marriageCertificate.errorMessage
+                      }
+                      setFile={setFile}
+                    />
                   </Grid>
+                </Grid>
+              )}
 
-                  {formValues.transportRequestAllowance.value ===
-                    "FC04 or above" && (
-                    <Grid container spacing={{ xs: 3, sm: 3, md: 3 }}>
-                      <Grid item xs={12} sm={4} md={4}>
-                        <FileField
-                          name="promotionLetter"
-                          onChange={fileHandleChange}
-                          labelText="Promotion Letter"
-                          multiple={true} // Allow multiple files to be selected
-                          files={formValues.marriageCertificate.value}
-                          textfieldProps={"Upload Files"} // Props for the text field
-                          autoCompleteProps={{ freeSolo: true }} // Props for the Autocomplete component
-                          error={formValues.marriageCertificate.error}
-                          helperText={
-                            formValues.marriageCertificate.error &&
-                            formValues.marriageCertificate.errorMessage
-                          }
-                          setFile={setFile}
-                        />
-                      </Grid>
-                    </Grid>
-                  )}
-
-                  {formValues.transportRequestAllowance.value ===
+              {/* {formValues.transportRequestAllowance.value ===
                     "Exception cases" && (
                     <div div>
                       <Grid item xs={12} sm={6} md={6}>
@@ -674,10 +750,10 @@ function HousingForm() {
                       </Grid>
                     </div>
                   )}
-                </>
+                </> 
               ) : (
                 formValues.payGrade.value !== "none" && <MouseOverPopover />
-              )}
+              )}*/}
               <Grid
                 container
                 spacing={{ xs: 1, sm: 2, md: 3 }}
@@ -690,6 +766,48 @@ function HousingForm() {
                 </Grid>
               </Grid>
             </form>
+          </StyledContainer>
+
+          <StyledContainer fixed>
+            <Grid container spacing={{ xs: 1, sm: 2, md: 3 }}>
+              <Grid item xs={12} sm={6} md={6}>
+                <DropDown
+                  placeholder="Enter Pay Grade"
+                  labelText="Status"
+                  name="payGrade"
+                  value={formValues.payGrade.value}
+                  // onChange={handleChange}
+                  // error={formValues.payGrade.error}
+                  // helperText={
+                  //   formValues.payGrade.error &&
+                  //   formValues.payGrade.errorMessage
+                  // }
+                  options={[
+                    {
+                      value: "none",
+                      label: "Select an option",
+                    },
+                    { value: "Approve", label: "Approve" },
+                    { value: "Reject", label: "Reject" },
+                  ]}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={6}>
+                <Input
+                  placeholder="Enter name"
+                  name="requesterName"
+                  value={formValues.requesterName.value}
+                  // onChange={handleChange}
+                  labelText="Description"
+                  error={formValues.requesterName.error}
+                  helperText={
+                    formValues.requesterName.error &&
+                    formValues.requesterName.errorMessage
+                  }
+                  multiline={true}
+                />
+              </Grid>
+            </Grid>
           </StyledContainer>
         </Grid>
       </Grid>

@@ -54,8 +54,10 @@ const MouseOverPopover = () => {
         disableRestoreFocus
       >
         <Typography sx={{ p: 1, color: theme.palette.info.main }}>
-          Grade FC03 and below staff members are not eligible for transport
-          allowance.
+          Grade FC03 and below staff members are not eligible for a transport
+          allowance. For any exception cases, please visit Room No. 12, Employee
+          Facilities and Services Office, during weekdays from 7:00 AM to 4:00
+          PM.
         </Typography>
       </Popover>
     </div>
