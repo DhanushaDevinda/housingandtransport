@@ -100,6 +100,14 @@ export default function CheckStatus() {
             <Label>Approve</Label>
           </Grid>
         </Grid>
+
+          <Grid item xs={6} sm={4}>
+            <Label>
+              <b>Description</b>
+            </Label>
+            <Label>Please come to the office with the original marriage certificate.</Label>
+          </Grid>
+        </Grid>
       </StyledContainer>
     </Grid>
   );
