@@ -107,7 +107,7 @@ export default function CheckStatus() {
             </Label>
             <Label>Please come to the office with the original marriage certificate.</Label>
           </Grid>
-        </Grid>
+       
       </StyledContainer>
     </Grid>
   );
