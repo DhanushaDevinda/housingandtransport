@@ -647,6 +647,11 @@ function HousingForm() {
                                 {(formValues.allowanceType.value === "Housing Allowance Request" || formValues.allowanceType.value === "Housing & Transport Allowance Request") && (
                                     <Grid container spacing={{ xs: 1, sm: 2, md: 3 }}>
                                         <Grid item xs={12} sm={4} md={4}>
+                                        {formValues.allowanceType.value === "Housing Allowance Request" ?<p style={{ marginBottom: "0px" }}>
+                                            Housing Allowance Request*&nbsp;
+                                            </p> : <p style={{ marginBottom: "0px" }}>
+                                            Housing & Transport Allowance Request*&nbsp;
+                                            </p>}
                                             <FileField
                                                 name="promotionLetter"
                                                 onChange={fileHandleChange}
@@ -771,11 +776,11 @@ function HousingForm() {
                                     </Grid>
                                 )} */}
 
-                                  {(formValues.allowanceType.value === "Transport Allowance Request" || formValues.allowanceType.value === "Housing & Transport Allowance Request") && (
+                                  {(formValues.allowanceType.value === "Transport Allowance Request") && (
                                     <Grid container spacing={{ xs: 3, sm: 3, md: 3 }}>
                                         <Grid item xs={12} sm={4} md={4}>
                                             <p style={{ marginBottom: "0px" }}>
-                                                Transport Request Allowance *&nbsp;
+                                                Transport Allowance Request*&nbsp;
                                             </p>
                                             <FileField
                                                 name="promotionLetter"
